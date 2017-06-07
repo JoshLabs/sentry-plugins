@@ -1,6 +1,11 @@
 Version 8.12
 ------------
 
+- Added the issue link to be visible directly in the slack notification.
+
+Version 8.12
+------------
+
 - Added VictorOps support for alerts.
 - Added Segment data forwarding.
 

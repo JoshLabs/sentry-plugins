@@ -19,7 +19,7 @@ from sentry.utils.distutils import (
     BuildAssetsCommand
 )
 
-VERSION = '8.12.0'
+VERSION = '8.12.1'
 
 tests_require = [
     'exam',

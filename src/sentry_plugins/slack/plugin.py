@@ -140,12 +140,10 @@ class SlackPlugin(CorePluginMixin, notify.NotificationPlugin):
         channel = (self.get_option('channel', project) or '').strip()
 
         title = event.message_short.encode('utf-8')
+        title_link = group.get_absolute_url()
         # TODO(dcramer): we'd like this to be the event culprit, but Sentry
         # does not currently retain it
-        if group.culprit:
-            culprit = group.culprit.encode('utf-8')
-        else:
-            culprit = None
+        culprit = group.culprit.encode('utf-8') if group.culprit else None
         project_name = project.get_full_name().encode('utf-8')
 
         fields = []
@@ -163,6 +161,12 @@ class SlackPlugin(CorePluginMixin, notify.NotificationPlugin):
             'title': 'Project',
             'value': project_name,
             'short': True,
+        })
+
+        fields.append({
+            'title': 'Issue Link',
+            'value': title_link,
+            'short': False,
         })
 
         if self.get_option('include_rules', project):
@@ -204,7 +208,7 @@ class SlackPlugin(CorePluginMixin, notify.NotificationPlugin):
             'attachments': [{
                 'fallback': '[%s] %s' % (project_name, title),
                 'title': title,
-                'title_link': group.get_absolute_url(),
+                'title_link': title_link,
                 'color': self.color_for_event(event),
                 'fields': fields,
             }]
